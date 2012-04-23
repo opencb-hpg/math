@@ -41,4 +41,7 @@ int vector_fprintf (const vector_t * v, const char * format, FILE * stream);
 int vector_memcpy (const vector_t *src, vector_t *dest);
 
 
+//int vector_add (vector * a, const gsl_vector * b);
+ 
+
 #endif

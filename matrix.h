@@ -2,7 +2,7 @@
 #define MATRIX_H
 
 typedef struct matrix {
-  gsl_matrix _gsl_matrix;
+  gsl_matrix *_gsl_matrix;
 } matrix_t;
 
 

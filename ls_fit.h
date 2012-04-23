@@ -1,5 +1,5 @@
-#ifndef MATH_TESTS_H
-#define MATH_TESTS_H
+#ifndef LS_FIT_H
+#define LS_FIT_H
 
 #include <sys/types.h>
 
