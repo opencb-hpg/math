@@ -1,24 +1,27 @@
 CC = gcc
 CFLAGS = -static -std=c99 -O3
+CFLAGS_DEBUG = -static -std=c99 -g
 
 SRC_DIR = .
+ROOT = ~/appl/bioinfo-c
 
 INCLUDES = -I $(SRC_DIR)
-
-ROOT = ~/appl/bioinfo-c
-LIBS_ROOT = $(PWD)/libs
-
 LIBS = -lgsl
 
-# OBJECTS = vector.o matrix.o stats.o
-OBJECTS = tests.o
-# math_utils.o R_utils.o
+OBJECTS = array_utils.o ls_fit.o math_utils.o 
+#matrix.o p_adjust.o R_utils.o statistics.o
+
 
 all: $(OBJECTS)
 
+array_utils.o:
+	$(CC) $(CFLAGS) -c array_utils.c $(INCLUDES) $(LIBS)
 
-vector.o:
-	$(CC) $(CFLAGS) -c vector.c $(INCLUDES) $(LIBS)
+ls_fit.o:
+	$(CC) $(CFLAGS) -c ls_fit.c $(INCLUDES) $(LIBS)
+
+math_utils.o:
+	$(CC) $(CFLAGS) -c math_utils.h $(INCLUDES) $(LIBS)
 
 matrix.o:
 	$(CC) $(CFLAGS) -c matrix.c $(INCLUDES) $(LIBS)
@@ -26,9 +29,5 @@ matrix.o:
 stats.o:
 	$(CC) $(CFLAGS) -c stats.c$(INCLUDES) $(LIBS)
 
-tests.o:
-	$(CC) $(CFLAGS) -c tests.c $(INCLUDES) $(LIBS)
-
-.PHONY : clean
 clean:
-	rm -f *.o *~
+	rm -f *.o
