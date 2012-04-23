@@ -1,7 +1,7 @@
 #ifndef MATRIX_H
 #define MATRIX_H
 
-typdef matrix {
+typedef struct matrix {
   gsl_matrix _gsl_matrix;
 } matrix_t;
 
