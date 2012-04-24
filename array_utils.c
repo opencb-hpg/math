@@ -1,73 +1,85 @@
 #include "array_utils.h"
 
-double *scalar_multiply(double *data, size_t n, double value) {
-    if(data == NULL || n < 1) { return NULL; }
+int array_scalar_multiply(double *data, size_t n, double value) {
+    if(data == NULL) { return -1; }
+    if(n < 1) { return -2; }
     
     for(size_t i = 0; i < n; i++) {
         data[i] = data[i] * value;
     }
-    return data;
+    return 0;
 }
 
-double *scalar_sum(double *data, size_t n, double value) {
-    if(data == NULL || n < 1) { return NULL; }
+int array_scalar_sum(double *data, size_t n, double value) {
+    if(data == NULL) { return -1; }
+    if(n < 1) { return -2; }
     
     for(size_t i = 0; i < n; i++) {
         data[i] = data[i] + value;
     }
-    return data;
+    return 0;
 }
 
 
-double *array_sum(double *data1, double *data2, size_t n) {
-    if(data1 == NULL || data2 == NULL || n < 1) { return NULL; }
+int array_sum(double *data1, const double *data2, size_t n) {
+    if(data1 == NULL) { return -1; }
+    if(data2 == NULL) { return -2; }
+    if(n < 1) { return -3; }
     
     for(size_t i = 0; i < n; i++) {
         data1[i] = data1[i] + data2[i];
     }
-    return data1;
+    return 0;
 }
 
-double *array_substract(double *data1, double *data2, size_t n) {
-    if(data1 == NULL || data2 == NULL || n < 1) { return NULL; }
+int array_substract(double *data1, const double *data2, size_t n) {
+    if(data1 == NULL) { return -1; }
+    if(data2 == NULL) { return -2; }
+    if(n < 1) { return -3; }
     
     for(size_t i = 0; i < n; i++) {
         data1[i] = data1[i] - data2[i];
     }
-    return data1;
+    return 0;
 }
 
-double array_dotproduct(double* data1, double* data2, size_t n) {
-    if(data1 == NULL || data2 == NULL || n < 1) { return NAN; }
+int array_dotproduct(double* data1, const double* data2, size_t n, double *res) {
+    if(data1 == NULL) { return -1; }
+    if(data2 == NULL) { return -2; }
+    if(n < 1) { return -3; }
+    if(res == NULL) { return -4; }
     
-    double dot_product = 0.0;
+    *res = 0.0;
     for(size_t i = 0; i < n; i++) {
-        dot_product += data1[i] * data2[i];
+        *res += data1[i] * data2[i];
     }
-    return dot_product;
+    return 0;
 }
 
 
-double *array_log(double *values, size_t n) {
-    if(values == NULL || n < 1) { return NULL; }
+int array_log(double *values, size_t n) {
+    if(values == NULL) { return -1; }
+    if(n < 1) { return -2; }
     
     for(size_t i = 0; i < n; i++) {
         values[i] = log(values[i]);
     }
-    return values;
+    return 0;
 }
 
-double *array_log10(double *values, size_t n) {
-    if(values == NULL || n < 1) { return NULL; }
+int array_log10(double *values, size_t n) {
+    if(values == NULL) { return -1; }
+    if(n < 1) { return -2; }
     
     for(size_t i = 0; i < n; i++) {
         values[i] = log10(values[i]);
     }
-    return values;
+    return 0;
 }
 
-double *array_log_base(double *values, size_t n, double base) {
-    if(values == NULL || n < 1) { return NULL; }
+int array_log_base(double *values, size_t n, double base) {
+    if(values == NULL) { return -1; }
+    if(n < 1) { return -2; }
     
     double d;
     for(size_t i = 0; i < n; i++) {
@@ -75,22 +87,24 @@ double *array_log_base(double *values, size_t n, double base) {
         if(d == -0.0) { d = 0.0; }
         values[i] = d;
     }
-    return values;
+    return 0;
 }
 
 
-double array_accum(const double *values, size_t n) {
-    return array_accum_range(values, 0, n);
+int array_accum(const double *values, size_t n, double *res) {
+    return array_accum_range(values, 0, n, res);
 }
 
-double array_accum_range(const double *values, size_t begin, size_t end) {
-    if(values == NULL || end < begin) { return NAN; }
+int array_accum_range(const double *values, size_t begin, size_t end, double *res) {
+    if(values == NULL) { return -1; }
+    if(end < begin) { return -2; }
+    if(res == NULL) { return -4; }
     
-    double sum = 0.0;
+    *res = 0.0;
     for (size_t i = begin; i < end; i++) {
         if(!isnan(values[i])) {
-            sum += values[i];
+            *res += values[i];
         }
     }
-    return sum;
+    return 0;
 }

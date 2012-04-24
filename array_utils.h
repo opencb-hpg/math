@@ -6,28 +6,28 @@
 
 #include "math_utils.h"
 
-double *scalar_multiply(double *data, size_t n, double value);
+int array_scalar_multiply(double *data, size_t n, double value);
 
-double *scalar_sum(double *data, size_t n, double value);
-
-
-double *array_sum(double *data1, double *data2, size_t n);
-
-double *array_substract(double *data1, double *data2, size_t n);
-
-double array_dotproduct(double *data1, double *data2, size_t n);
+int array_scalar_sum(double *data, size_t n, double value);
 
 
-double *array_log(double *values, size_t n);
+int array_sum(double *data1, const double *data2, size_t n);
 
-double *array_log10(double *values, size_t n);
+int array_substract(double *data1, const double *data2, size_t n);
 
-double *array_log_base(double *values, size_t n, double base);
+int array_dotproduct(double *data1, const double *data2, size_t n, double *res);
 
 
-double array_accum(const double *values, size_t n);
+int array_log(double *values, size_t n);
 
-double array_accum_range(const double *values, size_t begin, size_t end);
+int array_log10(double *values, size_t n);
+
+int array_log_base(double *values, size_t n, double base);
+
+
+int array_accum(const double *values, size_t n, double *res);
+
+int array_accum_range(const double *values, size_t begin, size_t end, double *res);
 
 
 #endif
