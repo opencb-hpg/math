@@ -3,6 +3,7 @@
 
 #include <math.h>
 #include <stdlib.h>
+#include <gsl_sort.h>
 
 #include "math_utils.h"
 
@@ -28,6 +29,11 @@ double *array_log_base(double *values, size_t n, double base);
 double array_accum(const double *values, size_t n);
 
 double array_accum_range(const double *values, size_t begin, size_t end);
+
+
+int order(const double *values, size_t n, int desc, size_t *indices);
+
+int ordered(const double *values, size_t n, const int *indices, double *ordered);
 
 
 #endif

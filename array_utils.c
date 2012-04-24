@@ -94,3 +94,24 @@ double array_accum_range(const double *values, size_t begin, size_t end) {
     }
     return sum;
 }
+
+int order(const double *values, size_t n, int desc, size_t *indices) {
+    gsl_sort_index(indices, values, 1, n);
+//     if(desc == 0) {
+//         gsl_vector_int *v = (gsl_vector_int *)malloc(sizeof(gsl_vector));
+//         v->size = n;
+//         v->data = values;
+//         v->stride = 1;
+//         gsl_vector_reverse(v);
+//         indices = v->data;
+//     }
+    return 1;
+}
+
+int ordered(const double *values, size_t n, const int *indices, double *ordered) {
+    size_t i = 0;
+    for(i = 0; i < n; i++) {
+        ordered[i] = values[indices[i]];
+    }
+    return 1;
+}
