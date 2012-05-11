@@ -213,9 +213,139 @@ double *fisher_test_vectorized(int* a, int* b, int* c, int* d, int len, enum Fis
         }
     }
     
+    free(init_a);
+    free(init_b);
+    free(init_c);
+    free(init_d);
+    
+    free(steps);
+    free(n);
+    free(numerator);
+    free(denominator);
+    free(init_p);
+    free(current_p);
+    
+    
     return result;
 }
 
+
+double *fisher_test_omp(int* a, int* b, int* c, int* d, int len, enum Fisher_mode mode, double* factorial_logarithms) {
+    double *result = (double*) malloc (len * sizeof(double));
+    
+    int *init_a = (int*) malloc (len * sizeof(int));
+    int *init_b = (int*) malloc (len * sizeof(int));
+    int *init_c = (int*) malloc (len * sizeof(int));
+    int *init_d = (int*) malloc (len * sizeof(int));
+    
+    int steps;
+    double n, numerator, denominator, current_p, init_p;
+    
+#pragma omp parallel for private(n, steps, numerator, denominator, current_p, init_p)
+    for (int i = 0; i < len; i++) {
+        switch (mode) {
+            case 1:
+                if(a[i] > d[i]) {
+                    init_a[i] = a[i] - d[i];
+                    init_b[i] = b[i] + d[i];
+                    init_c[i] = c[i] + d[i];
+                    init_d[i] = 0;
+                    steps = d[i];
+                }
+                else {
+                    init_a[i] = 0;
+                    init_b[i] = b[i] + a[i];
+                    init_c[i] = c[i] + a[i];
+                    init_d[i] = d[i] - a[i];
+                    steps = a[i];
+                }
+                break;
+            case 2:
+                init_a[i] = a[i];
+                init_b[i] = b[i];
+                init_c[i] = c[i];
+                init_d[i] = d[i];
+                if (b[i] > c[i]) {
+                    steps = c[i];
+                } else {
+                    steps = b[i];
+                }
+                break;
+            case 3:
+                if(a[i] > d[i]) {
+                    init_a[i] = a[i] - d[i];
+                    init_b[i] = b[i] + d[i];
+                    init_c[i] = c[i] + d[i];
+                    init_d[i] = 0;
+                    steps = d[i];
+                } else {
+                    init_a[i] = 0;
+                    init_b[i] = b[i] + a[i];
+                    init_c[i] = c[i] + a[i];
+                    init_d[i] = d[i] - a[i];
+                    steps = a[i];
+                }
+                if (b[i] > c[i]) {
+                    steps += c[i];
+                } else {
+                    steps += b[i];
+                }
+                break;
+        }
+        
+        n = factorial_logarithms[a[i]+b[i]+c[i]+d[i]];
+        numerator = factorial_logarithms[init_a[i]+init_b[i]] + factorial_logarithms[init_b[i]+init_d[i]] + 
+                       factorial_logarithms[init_a[i]+init_c[i]] + factorial_logarithms[init_c[i]+init_d[i]];
+        denominator = n + factorial_logarithms[init_a[i]] + factorial_logarithms[init_b[i]] + factorial_logarithms[init_c[i]] + factorial_logarithms[init_d[i]];
+        current_p = numerator - denominator;
+
+        if(mode == 3) {
+            numerator = factorial_logarithms[a[i]+b[i]] + factorial_logarithms[b[i]+d[i]] + factorial_logarithms[a[i]+c[i]] + factorial_logarithms[c[i]+d[i]];
+            denominator = n + factorial_logarithms[a[i]] + factorial_logarithms[b[i]] + factorial_logarithms[c[i]] + factorial_logarithms[d[i]];
+            init_p = numerator - denominator;
+
+            if (current_p <= init_p) {
+                result[i] = exp(current_p);
+            } else {
+                result[i] = 0;
+            }
+
+            while(steps-- > 0) {
+                init_a[i]++;
+                init_d[i]++;
+                init_c[i]--;
+                init_b[i]--;
+                numerator = factorial_logarithms[init_a[i]+init_b[i]] + factorial_logarithms[init_b[i]+init_d[i]] + 
+                               factorial_logarithms[init_a[i]+init_c[i]] + factorial_logarithms[init_c[i]+init_d[i]];
+                denominator = n + factorial_logarithms[init_a[i]] + factorial_logarithms[init_b[i]] + factorial_logarithms[init_c[i]] + factorial_logarithms[init_d[i]];
+                current_p = numerator - denominator;
+                if(current_p <= init_p) {
+                    result[i] += exp(current_p);
+                }
+            }
+        } else {
+            result[i] = exp(current_p);
+            while(steps-- > 0) {
+                init_a[i]++;
+                init_d[i]++;
+                init_c[i]--;
+                init_b[i]--;
+                numerator = factorial_logarithms[init_a[i]+init_b[i]] + factorial_logarithms[init_b[i]+init_d[i]] + 
+                               factorial_logarithms[init_a[i]+init_c[i]] + factorial_logarithms[init_c[i]+init_d[i]];
+                denominator = n + factorial_logarithms[init_a[i]] + factorial_logarithms[init_b[i]] + factorial_logarithms[init_c[i]] + factorial_logarithms[init_d[i]];
+                current_p = numerator - denominator;
+                result[i] += exp(current_p);
+            }
+        }
+    }
+    
+    free(init_a);
+    free(init_b);
+    free(init_c);
+    free(init_d);
+    
+    return result;
+}
 
 
 

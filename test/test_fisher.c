@@ -20,15 +20,14 @@ int main(int argc, char *argv[]) {
     
     // Benchmark sequential implementation
     start = omp_get_wtime();
-    for (int i = 0; i < loop; i++) {
+    for (int i = 0; i < loop * 10; i++) {
         result = fisher_test(a, b, c, d, mode, factorial_logarithms);
     }
     end = omp_get_wtime();
 
     printf("Sequential implementation: %.3f s, result = %f\n", end - start, result);
     
-    // TODO Benchmark vectorized implementation
-    // can be compiled with -msse3 -mfpmath=sse so GCC can auto-generate SSE instructions
+    // Benchmark vectorized implementation
     int *a_v = (int*) malloc (loop * sizeof(int));
     int *b_v = (int*) malloc (loop * sizeof(int));
     int *c_v = (int*) malloc (loop * sizeof(int));
@@ -39,7 +38,10 @@ int main(int argc, char *argv[]) {
     }
     
     start = omp_get_wtime();
-    result_v = fisher_test_vectorized(a_v, b_v, c_v, d_v, loop, mode, factorial_logarithms);
+    for (int i = 0; i < 10; i++) {
+        result_v = fisher_test_vectorized(a_v, b_v, c_v, d_v, loop, mode, factorial_logarithms);
+        if (i < 9) { free(result_v); }
+    }
     end = omp_get_wtime();
     
     printf("Vectorized implementation: %.3f s, result_v[0] = %f\n", end - start, result_v[0]);
@@ -48,16 +50,29 @@ int main(int argc, char *argv[]) {
             printf("Position %d is not correct (%e)\n", i, result_v[i]);
         }
     }
+    free(result_v);
     
+    // TODO Benchmark vectorized implementation using OpenMP
+    start = omp_get_wtime();
+    for (int i = 0; i < 10; i++) {
+        result_v = fisher_test_omp(a_v, b_v, c_v, d_v, loop, mode, factorial_logarithms);
+        if (i < 9) { free(result_v); }
+    }
+    end = omp_get_wtime();
     
-    // TODO Benchmark vectorized implementation using SSE automatic optimization
+    printf("OpenMP implementation: %.3f s, result_v[0] = %f\n", end - start, result_v[0]);
+    for (int i = 0; i < loop; i++) {
+        if (result != result_v[i]) {
+            printf("Position %d is not correct (%e)\n", i, result_v[i]);
+        }
+    }
+    free(result_v);
     
     
     // TODO Benchmark vectorized implementation using SSE manual implementation
     
     
     free(a_v); free(b_v); free(c_v); free(d_v);
-    free(result_v);
     free(factorial_logarithms);
     
     return 0;
