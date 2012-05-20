@@ -75,7 +75,6 @@ double fisher_test(int a, int b, int c, int d, enum Fisher_mode mode, double *fa
             init_d++;
             init_c--;
             init_b--;
-//             printf("init_c = %d\n", init_c);
             numerator = factorial_logarithms[init_a+init_b] + factorial_logarithms[init_b+init_d] + factorial_logarithms[init_a+init_c] + factorial_logarithms[init_c+init_d];
             denominator = n + factorial_logarithms[init_a] + factorial_logarithms[init_b] + factorial_logarithms[init_c] + factorial_logarithms[init_d];
             current_p = numerator - denominator;
@@ -232,39 +231,35 @@ double *fisher_test_vectorized(int* a, int* b, int* c, int* d, int len, enum Fis
 
 double *fisher_test_omp(int* a, int* b, int* c, int* d, int len, enum Fisher_mode mode, double* factorial_logarithms) {
     double *result = (double*) malloc (len * sizeof(double));
-    
-    int *init_a = (int*) malloc (len * sizeof(int));
-    int *init_b = (int*) malloc (len * sizeof(int));
-    int *init_c = (int*) malloc (len * sizeof(int));
-    int *init_d = (int*) malloc (len * sizeof(int));
-    
+   
+    int init_a, init_b, init_c, init_d;
     int steps;
     double n, numerator, denominator, current_p, init_p;
     
-#pragma omp parallel for private(n, steps, numerator, denominator, current_p, init_p)
+#pragma omp parallel for private(init_a, init_b, init_c, init_d, n, steps, numerator, denominator, current_p, init_p)
     for (int i = 0; i < len; i++) {
         switch (mode) {
             case 1:
                 if(a[i] > d[i]) {
-                    init_a[i] = a[i] - d[i];
-                    init_b[i] = b[i] + d[i];
-                    init_c[i] = c[i] + d[i];
-                    init_d[i] = 0;
+                    init_a = a[i] - d[i];
+                    init_b = b[i] + d[i];
+                    init_c = c[i] + d[i];
+                    init_d = 0;
                     steps = d[i];
                 }
                 else {
-                    init_a[i] = 0;
-                    init_b[i] = b[i] + a[i];
-                    init_c[i] = c[i] + a[i];
-                    init_d[i] = d[i] - a[i];
+                    init_a = 0;
+                    init_b = b[i] + a[i];
+                    init_c = c[i] + a[i];
+                    init_d = d[i] - a[i];
                     steps = a[i];
                 }
                 break;
             case 2:
-                init_a[i] = a[i];
-                init_b[i] = b[i];
-                init_c[i] = c[i];
-                init_d[i] = d[i];
+                init_a = a[i];
+                init_b = b[i];
+                init_c = c[i];
+                init_d = d[i];
                 if (b[i] > c[i]) {
                     steps = c[i];
                 } else {
@@ -273,16 +268,16 @@ double *fisher_test_omp(int* a, int* b, int* c, int* d, int len, enum Fisher_mod
                 break;
             case 3:
                 if(a[i] > d[i]) {
-                    init_a[i] = a[i] - d[i];
-                    init_b[i] = b[i] + d[i];
-                    init_c[i] = c[i] + d[i];
-                    init_d[i] = 0;
+                    init_a = a[i] - d[i];
+                    init_b = b[i] + d[i];
+                    init_c = c[i] + d[i];
+                    init_d = 0;
                     steps = d[i];
                 } else {
-                    init_a[i] = 0;
-                    init_b[i] = b[i] + a[i];
-                    init_c[i] = c[i] + a[i];
-                    init_d[i] = d[i] - a[i];
+                    init_a = 0;
+                    init_b = b[i] + a[i];
+                    init_c = c[i] + a[i];
+                    init_d = d[i] - a[i];
                     steps = a[i];
                 }
                 if (b[i] > c[i]) {
@@ -294,9 +289,9 @@ double *fisher_test_omp(int* a, int* b, int* c, int* d, int len, enum Fisher_mod
         }
         
         n = factorial_logarithms[a[i]+b[i]+c[i]+d[i]];
-        numerator = factorial_logarithms[init_a[i]+init_b[i]] + factorial_logarithms[init_b[i]+init_d[i]] + 
-                       factorial_logarithms[init_a[i]+init_c[i]] + factorial_logarithms[init_c[i]+init_d[i]];
-        denominator = n + factorial_logarithms[init_a[i]] + factorial_logarithms[init_b[i]] + factorial_logarithms[init_c[i]] + factorial_logarithms[init_d[i]];
+        numerator = factorial_logarithms[init_a+init_b] + factorial_logarithms[init_b+init_d] + 
+                       factorial_logarithms[init_a+init_c] + factorial_logarithms[init_c+init_d];
+        denominator = n + factorial_logarithms[init_a] + factorial_logarithms[init_b] + factorial_logarithms[init_c] + factorial_logarithms[init_d];
         current_p = numerator - denominator;
 
         if(mode == 3) {
@@ -311,13 +306,13 @@ double *fisher_test_omp(int* a, int* b, int* c, int* d, int len, enum Fisher_mod
             }
 
             while(steps-- > 0) {
-                init_a[i]++;
-                init_d[i]++;
-                init_c[i]--;
-                init_b[i]--;
-                numerator = factorial_logarithms[init_a[i]+init_b[i]] + factorial_logarithms[init_b[i]+init_d[i]] + 
-                               factorial_logarithms[init_a[i]+init_c[i]] + factorial_logarithms[init_c[i]+init_d[i]];
-                denominator = n + factorial_logarithms[init_a[i]] + factorial_logarithms[init_b[i]] + factorial_logarithms[init_c[i]] + factorial_logarithms[init_d[i]];
+                init_a++;
+                init_d++;
+                init_c--;
+                init_b--;
+                numerator = factorial_logarithms[init_a+init_b] + factorial_logarithms[init_b+init_d] + 
+                               factorial_logarithms[init_a+init_c] + factorial_logarithms[init_c+init_d];
+                denominator = n + factorial_logarithms[init_a] + factorial_logarithms[init_b] + factorial_logarithms[init_c] + factorial_logarithms[init_d];
                 current_p = numerator - denominator;
                 if(current_p <= init_p) {
                     result[i] += exp(current_p);
@@ -326,23 +321,18 @@ double *fisher_test_omp(int* a, int* b, int* c, int* d, int len, enum Fisher_mod
         } else {
             result[i] = exp(current_p);
             while(steps-- > 0) {
-                init_a[i]++;
-                init_d[i]++;
-                init_c[i]--;
-                init_b[i]--;
-                numerator = factorial_logarithms[init_a[i]+init_b[i]] + factorial_logarithms[init_b[i]+init_d[i]] + 
-                               factorial_logarithms[init_a[i]+init_c[i]] + factorial_logarithms[init_c[i]+init_d[i]];
-                denominator = n + factorial_logarithms[init_a[i]] + factorial_logarithms[init_b[i]] + factorial_logarithms[init_c[i]] + factorial_logarithms[init_d[i]];
+                init_a++;
+                init_d++;
+                init_c--;
+                init_b--;
+                numerator = factorial_logarithms[init_a+init_b] + factorial_logarithms[init_b+init_d] + 
+                               factorial_logarithms[init_a+init_c] + factorial_logarithms[init_c+init_d];
+                denominator = n + factorial_logarithms[init_a] + factorial_logarithms[init_b] + factorial_logarithms[init_c] + factorial_logarithms[init_d];
                 current_p = numerator - denominator;
                 result[i] += exp(current_p);
             }
         }
     }
-    
-    free(init_a);
-    free(init_b);
-    free(init_c);
-    free(init_d);
     
     return result;
 }

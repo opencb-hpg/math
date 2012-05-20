@@ -52,7 +52,7 @@ int main(int argc, char *argv[]) {
     }
     free(result_v);
     
-    // TODO Benchmark vectorized implementation using OpenMP
+    // Benchmark vectorized implementation using OpenMP
     start = omp_get_wtime();
     for (int i = 0; i < 10; i++) {
         result_v = fisher_test_omp(a_v, b_v, c_v, d_v, loop, mode, factorial_logarithms);
@@ -67,10 +67,6 @@ int main(int argc, char *argv[]) {
         }
     }
     free(result_v);
-    
-    
-    // TODO Benchmark vectorized implementation using SSE manual implementation
-    
     
     free(a_v); free(b_v); free(c_v); free(d_v);
     free(factorial_logarithms);
