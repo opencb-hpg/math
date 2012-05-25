@@ -1,5 +1,16 @@
 #include "array_utils.h"
 
+
+typedef struct _double_index{ // Struct to store and order the values of the amplitudes preserving the index in the original array
+    double value;
+    size_t index;
+} double_index_t;
+
+int _compare_doubles_asc (const void *a, const void *b);
+
+int _compare_doubles_desc (const void *a, const void *b);
+
+
 int array_scalar_multiply(double *data, size_t n, double value) {
     if(data == NULL) { return -1; }
     if(n == 0) { return -2; }
@@ -110,23 +121,84 @@ int array_accum_range(const double *values, size_t begin, size_t end, double *re
     return 0;
 }
 
-int order(const double *values, size_t n, int desc, size_t *indices) {
-    gsl_sort_index(indices, values, 1, n);
-//     if(desc == 0) {
-//         gsl_vector_int *v = (gsl_vector_int *)malloc(sizeof(gsl_vector));
-//         v->size = n;
-//         v->data = values;
-//         v->stride = 1;
-//         gsl_vector_reverse(v);
-//         indices = v->data;
-//     }
-    return 1;
+int array_order(double *values, size_t n, int asc, size_t *indices) {
+    double_index_t *array_doubles_indices = (double_index_t*) malloc(n * sizeof(double_index_t));
+    
+    /*  Initialize struct to sort    */
+    for(size_t i = 0; i < n; i++){
+        array_doubles_indices[i].value = values[i];
+        array_doubles_indices[i].index = i;
+    }
+    
+    /*  Sort ASC or DESC    */
+    if(asc == 1) {
+        qsort(array_doubles_indices, n, sizeof(array_doubles_indices[0]), _compare_doubles_asc);
+    }else {
+        qsort(array_doubles_indices, n, sizeof(array_doubles_indices[0]), _compare_doubles_desc);
+    }
+
+    /*  Save sorted indices */
+    for(size_t i = 0; i < n; i++){
+        indices[i] = array_doubles_indices[i].index;
+    }
+    
+    free(array_doubles_indices);
+    return 0;
 }
 
-int ordered(const double *values, size_t n, const int *indices, double *ordered) {
-    size_t i = 0;
-    for(i = 0; i < n; i++) {
+int array_ordered(const double *values, size_t n, const size_t *indices, double *ordered) {
+    for(size_t i = 0; i < n; i++) {
         ordered[i] = values[indices[i]];
     }
     return 1;
+}
+
+
+
+size_t array_printf(const double *values, size_t n, char *format) {
+    return array_fprintf(values, n, format, stdout);
+}
+
+size_t array_fprintf(const double *values, size_t n, char *format, FILE *file) {
+    if(values == NULL) { return -1; }
+    if(file == NULL) { return -4; }
+    
+    if(format == NULL) {
+        format = "%f\n";
+    }
+    size_t num_chars = 0;
+    size_t i;
+    for(i=0; i < n; i++) {
+        num_chars += fprintf(file, format, values[i]);
+    }
+    return num_chars;
+}
+
+void array_fread(FILE *file, double *values, size_t n) {
+    size_t cont = 0;
+    char line[40];
+    while(cont < n && fgets(line, 40, file) != NULL) {
+        values[cont] = atof(line);
+        cont++;
+    }
+}
+
+
+
+int _compare_doubles_asc (const void *a, const void *b) {
+    double_index_t *struct_a = (double_index_t*) a;
+    double_index_t *struct_b = (double_index_t*) b;
+
+    if (struct_a->value > struct_b->value) return 1;
+    else if (struct_a->value == struct_b->value) return 0;
+    else return -1;
+}
+
+int _compare_doubles_desc (const void *a, const void *b) {
+    double_index_t *struct_a = (double_index_t*) a;
+    double_index_t *struct_b = (double_index_t*) b;
+
+    if (struct_a->value < struct_b->value) return 1;
+    else if (struct_a->value == struct_b->value) return 0;
+    else return -1;
 }

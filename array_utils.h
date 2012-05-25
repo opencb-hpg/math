@@ -4,7 +4,6 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <gsl_sort.h>
 
 #include "math_utils.h"
 
@@ -32,9 +31,16 @@ int array_accum(const double *values, size_t n, double *res);
 int array_accum_range(const double *values, size_t begin, size_t end, double *res);
 
 
-int order(const double *values, size_t n, int desc, size_t *indices);
+int array_order(double *values, size_t n, int asc, size_t *indices);
 
-int ordered(const double *values, size_t n, const int *indices, double *ordered);
+int array_ordered(const double *values, size_t n, const size_t *indices, double *ordered);
+
+
+size_t array_printf(const double *values, size_t n, char *format);
+
+size_t array_fprintf(const double *values, size_t n, char *format, FILE *file);
+
+void array_fread(FILE *file, double *values, size_t n);
 
 
 #endif

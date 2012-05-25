@@ -2,6 +2,7 @@
 #define P_ADJUST_H
 
 #include "R_utils.h"
+#include "array_utils.h"
 
 int FDR_correction(double *pvalues, size_t n);
 

@@ -5,6 +5,7 @@
 #include <check.h>
 
 #include "array_utils.h"
+#include "p_adjust.h"
 
 Suite *create_test_suite();
 
@@ -19,7 +20,7 @@ double *data1, *data2;
 void setup_data1(void) {
     data1 = (double*) malloc (length * sizeof(double));
     for (int i = 0; i < length; i++) {
-        data1[i] = i;
+        data1[i] = i*0.001;
     }
 }
 
@@ -217,7 +218,64 @@ START_TEST(test_array_accum_range) {
 }
 END_TEST
 
+START_TEST(test_array_order) {
+    printf("Ordering data1 array\n");
+    size_t *indices = (size_t*)malloc(length*sizeof(size_t));
+    
+    printf("Nominal p-values:\n");
+    array_printf(data1, length, "%f ");
+    printf("\n");
+    BH_correction(data1, length);
+    printf("BH p-adjust::\n");
+    array_printf(data1, length, "%f ");
+    printf("\n\n");
+    
+    data1[8] = INFINITY;
+    data1[4] = NAN;
+    array_order(data1, length, 0, indices);
+    
+    double *double_ordered = (double*)malloc(length*sizeof(double));
+    array_ordered(data1, length, indices, double_ordered);
+    printf("Original with NaN and INFINITY:\n");
+    array_printf(data1, length, "%f ");
+    printf("\n");
 
+    printf("Ordered desc:\n");
+    array_printf(double_ordered, length, "%f ");
+    printf("\n");
+
+    printf("Ordered asc:\n");
+    array_order(data1, length, 1, indices);
+    array_ordered(data1, length, indices, double_ordered);
+    array_printf(double_ordered, length, "%f ");
+    printf("\n\n");
+    
+    free(indices);
+    free(double_ordered);
+   
+}
+END_TEST
+
+START_TEST(test_array_io) {
+    printf("Printing data1 array\n");
+    size_t chars_printed = array_printf(data1, length, "%f ");
+    fail_unless(chars_printed > 0, "An error printing array has occurred");
+   
+    printf("Saving data1 array to '/tmp/array_fprintf.txt'\n");
+    FILE *file = fopen("/tmp/array_fprintf.txt", "w");
+    chars_printed = array_fprintf(data1, length, "%f\n", file);
+    fclose(file);
+    fail_unless(chars_printed > 0, "An error saving array has occurred");
+    
+    printf("Reading data1 array from '/tmp/array_fprintf.txt'\n");
+    file = fopen("/tmp/array_fprintf.txt", "r");
+    double *data_file = (double*)malloc(length*sizeof(double));
+    array_fread(file, data_file, length);
+    fclose(file);
+    array_printf(data_file, length, "%f ");
+    printf("\n");
+}
+END_TEST
 /* ******************************
  *        Main entry point      *
  * ******************************/
@@ -257,12 +315,22 @@ Suite *create_test_suite() {
     tcase_add_test(tc_accum, test_array_accum);
     tcase_add_test(tc_accum, test_array_accum_range);
     
+    TCase *tc_order = tcase_create("Array elements order");
+    tcase_add_checked_fixture(tc_order, setup_data1, teardown_data1);
+    tcase_add_test(tc_order, test_array_order);
+    
+    TCase *tc_io = tcase_create("Array elements IO");
+    tcase_add_checked_fixture(tc_io, setup_data1, teardown_data1);
+    tcase_add_test(tc_io, test_array_io);
+    
     // Add test cases to a test suite
     Suite *fs = suite_create("Array utilities");
     suite_add_tcase(fs, tc_array_scalar);
     suite_add_tcase(fs, tc_array_array);
     suite_add_tcase(fs, tc_log);
     suite_add_tcase(fs, tc_accum);
+    suite_add_tcase(fs, tc_order);
+    suite_add_tcase(fs, tc_io);
     
     return fs;
 }

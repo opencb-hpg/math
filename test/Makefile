@@ -8,7 +8,7 @@ ROOT = ~/appl/bioinfo-c
 INCLUDES = -I $(SRC_DIR)
 LIBS = -lgsl -lcheck -lpthread -lm
 
-OBJECTS = $(SRC_DIR)/array_utils.o
+OBJECTS = $(SRC_DIR)/array_utils.o $(SRC_DIR)/p_adjust.o $(SRC_DIR)/R_utils.o
 # $(SRC_DIR)/math_utils.
 
 
@@ -19,6 +19,12 @@ test-array-utils: array_utils.o
 
 array_utils.o:
 	cd $(SRC_DIR) && make array_utils.o
+
+p_adjust.o: p_adjust.h p_adjust.c
+	cd $(SRC_DIR) && make p_adjust.o
+
+R_utils.o: R_utils.h R_utils.c
+	cd $(SRC_DIR) && make R_utils.o
 
 #ls_fit.o:
 #	$(CC) $(CFLAGS) -c ls_fit.c $(INCLUDES) $(LIBS)
