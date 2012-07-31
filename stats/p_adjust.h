@@ -16,5 +16,4 @@ int BY_correction(double *pvalues, size_t n);
 
 int Holm_correction(double *pvalues, size_t n);
 
-
 #endif  /* P_ADJUST_H */

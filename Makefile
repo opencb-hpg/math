@@ -7,8 +7,8 @@ LIBS_DIR = $(PWD)/..
 INCLUDES = -I $(PWD)
 LIBS = -lgsl
 
-OBJECTS = array_utils.o fitting.o math_utils.o statistics.o stats_inference.o
-#matrix.o p_adjust.o R_utils.o
+OBJECTS = array_utils.o fitting.o math_utils.o p_adjust.o statistics.o stats_inference.o
+#matrix.o R_utils.o
 
 
 all: $(OBJECTS)
