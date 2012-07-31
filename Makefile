@@ -4,7 +4,7 @@ CFLAGS_DEBUG = -static -std=c99 -g
 
 LIBS_DIR = $(PWD)/..
 
-INCLUDES = -I $(PWD)
+INCLUDES = -I$(PWD) -I$(PWD)/algebra -I$(PWD)/data -I$(PWD)/stats
 LIBS = -lgsl
 
 OBJECTS = array_utils.o fitting.o math_utils.o p_adjust.o statistics.o stats_inference.o
