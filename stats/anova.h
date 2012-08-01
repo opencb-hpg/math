@@ -8,6 +8,7 @@
 #include <string.h>
 
 #include <gsl/gsl_randist.h>
+#include <gsl/gsl_cdf.h>
 
 #include "anova_result.h"
 
