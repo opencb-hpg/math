@@ -16,6 +16,15 @@ all: $(OBJECTS)
 compile:
 	$(CC) $(CFLAGS) -c *.c algebra/*.c data/*.c stats/*.c $(INCLUDES) $(LIBS)
 
+algebra:
+	$(CC) $(CFLAGS) -c algebra/*.c $(INCLUDES) $(LIBS)
+
+data:
+	$(CC) $(CFLAGS) -c data/*.c $(INCLUDES) $(LIBS)
+
+stats:
+	$(CC) $(CFLAGS) -c stats/*.c $(INCLUDES) $(LIBS)
+
 anova.o:
 	$(CC) $(CFLAGS) -c stats/anova.c $(INCLUDES) $(LIBS)
 
