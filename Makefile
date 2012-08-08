@@ -3,8 +3,9 @@ CFLAGS = -static -std=c99 -O3 -Wall
 CFLAGS_DEBUG = -static -std=c99 -g
 
 LIBS_DIR = $(PWD)/..
+COMMONS_LIB = $(LIBS_DIR)/commons
 
-INCLUDES = -I$(PWD) -I$(PWD)/algebra -I$(PWD)/data -I$(PWD)/stats
+INCLUDES = -I$(PWD) -I$(PWD)/algebra -I$(PWD)/data -I$(PWD)/stats -I$(COMMONS_LIB)
 LIBS = -lgsl
 
 OBJECTS = anova.o anova_result.o array_utils.o fitting.o math_utils.o p_adjust.o statistics.o stats_inference.o R_utils.o ttest.o ttest_result.o
