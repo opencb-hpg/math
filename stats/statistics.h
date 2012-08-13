@@ -29,60 +29,66 @@ typedef struct vector {
  * *************************************/
 
 /**
-*  @brief Calculates mean of values of a double vector
-*  @param v pointer to the vector structure
+*  @brief Calculates mean of double values
+*  @param values pointer to the double values
+*  @param length num of values
 *  @return mean value
 *  
-*  Calculates mean of values of a double vector
+*  Calculates mean of double values
 */
-double stats_mean(const vector_t *v);
+double stats_mean(const double* values, size_t length);
 
 /**
-*  @brief Calculates variance of values of a double vector
-*  @param v pointer to the vector structure
+*  @brief Calculates variance of double values
+*  @param values pointer to the double values
+*  @param length num of values
 *  @return variance value
 *  
-*  Calculates variance of values of a double vector
+*  Calculates variance of double values
 */
-double stats_variance(const vector_t *v);
+double stats_variance(const double* values, size_t length);
 
 /**
-*  @brief Calculates median of a double vector
-*  @param v pointer to the vector structure
+*  @brief Calculates median of double values
+*  @param values pointer to the double values
+*  @param length num of values
 *  @return median value
 *  
-*  Calculates median of a double vector
+*  Calculates median of double values
 */
-double stats_median(vector_t *v);
+double stats_median(double* values, size_t length);
 
 /**
-*  @brief Calculates median of a SORTED double vector
-*  @param v pointer to the vector structure
+*  @brief Calculates median of SORTED double values
+*  @param values pointer to the double values
+*  @param length num of values
 *  @return median value
 *  
-*  Calculates median of a SORTED double vector
+*  Calculates median of SORTED double values
 */
-double stats_median_sorted_vector(const vector_t *v);
+double stats_median_sorted_values(const double* values, size_t length);
 
 /**
-*  @brief Calculates percentile of a double vector
-*  @param v pointer to the vector structure
+*  @brief Calculates percentile of double values
+*  @param values pointer to the double values
+*  @param length num of values
 *  @param percentile value of the percentile to calculate
 *  @return value meeting the percentile
 *  
-*  Calculates percentile of a double vector
+*  Calculates percentile of double values
 */
-double stats_percentile(vector_t *v, double percentile);
+double stats_percentile(double* values, size_t length, double percentile);
 
 /**
-*  @brief Calculates percentile of a SORTED double vector
-*  @param v pointer to the vector structure
+*  @brief Calculates percentile of SORTED double values
+*  @param values pointer to the double values
+*  @param length num of values
 *  @param percentile value of the percentile to calculate
 *  @return value meeting the percentile
 *  
-*  Calculates percentile of a SORTED double vector
+*  Calculates percentile of SORTED double values
 */
-double stats_percentile_sorted_vector(const vector_t *v, double percentile);
+double stats_percentile_sorted_values(const double* values, size_t length, double percentile);
 
 /**
 *  @brief Creates a new vector from a double pointer

@@ -9,32 +9,34 @@
  *    		Statistic functions  		*
  * *********************************************/
 
-double stats_mean(const vector_t *v) {
-    return gsl_stats_mean(v->values, 1, v->length);
+double stats_mean(const double* values, size_t length) {
+    return gsl_stats_mean(values, 1, length);
 }
 
-double stats_variance(const vector_t *v) {
-    return gsl_stats_variance(v->values, 1, v->length);
+double stats_variance(const double* values, size_t length) {
+    return gsl_stats_variance(values, 1, length);
 }
 
-double stats_median(vector_t *v) {
-    return stats_median_sorted_vector(vector_sort(v));
+double stats_median(double* values, size_t length) {
+    gsl_sort(values, 1, length);
+    return stats_median_sorted_values(values, length);
 }
 
-double stats_median_sorted_vector(const vector_t *v) {
-    return gsl_stats_median_from_sorted_data(v->values, 1, v->length);
+double stats_median_sorted_values(const double* values, size_t length) {
+    return gsl_stats_median_from_sorted_data(values, 1, length);
 }
 
-double stats_percentile(vector_t *v, double percentile) {
-    return stats_percentile_sorted_vector(vector_sort(v), percentile);
+double stats_percentile(double* values, size_t length, double percentile) {
+    gsl_sort(values, 1, length);    
+    return stats_percentile_sorted_values(values, length, percentile);
 }
 
-double stats_percentile_sorted_vector(const vector_t *v, double percentile) {
+double stats_percentile_sorted_values(const double* values, size_t length, double percentile) {
     if ((percentile > 100) || (percentile < 0)) {
         LOG_FATAL("Percentile value must be between 0 and 100");
     }
       
-    return gsl_stats_quantile_from_sorted_data(v->values, 1, v->length, (percentile / 100));  
+    return gsl_stats_quantile_from_sorted_data(values, 1, length, (percentile / 100));  
 }
 
 /* **********************************************
