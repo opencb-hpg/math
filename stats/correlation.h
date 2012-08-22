@@ -27,6 +27,6 @@
 *  
 *  Computes correlation for two arrays of double
 */
-double correlation(double* values1, double* values2, double size);
+double pearson_correlation(double* values1, double* values2, double size);
 
 #endif /* CORRELATION_H */
