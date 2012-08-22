@@ -7,11 +7,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-//#include <gsl/gsl_randist.h>
 #include <gsl/gsl_statistics_double.h>
 #include <gsl/gsl_cdf.h>
-
-#include "ttest_result.h"
 
 /* **************************************
  *    		Structures  		*
