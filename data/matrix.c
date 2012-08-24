@@ -12,9 +12,18 @@ matrix_t* matrix_new(size_t num_rows, size_t num_cols) {
     return matrix_p;
 }
 
-void matrix_free(matrix_t *m) {    
-    gsl_matrix_free(m->gsl_matrix);
+void matrix_free(matrix_t *m) {
+    if (m == NULL) {
+        return;
+    }
+    
+    if (m->gsl_matrix == NULL) {
+        gsl_matrix_free(m->gsl_matrix);
+        m->gsl_matrix = NULL;
+    }
+
     free(m);
+    m = NULL;
     
     return;
 }
