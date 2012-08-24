@@ -17,7 +17,7 @@ void matrix_free(matrix_t *m) {
         return;
     }
     
-    if (m->gsl_matrix == NULL) {
+    if (m->gsl_matrix != NULL) {
         gsl_matrix_free(m->gsl_matrix);
         m->gsl_matrix = NULL;
     }
