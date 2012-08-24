@@ -114,6 +114,16 @@ int matrix_set_col(size_t j, const vector_t *v, matrix_t *m);
  * *****************************************************/
 
 /**
+*  @brief Scales/multiplies by a factor all elements of a matrix
+*  @param m pointer to the matrix to scale
+*  @param factor double factor to scale the matrix
+*  @return pointer to the scaled matrix
+*  
+*  Scales/multiplies by a factor all elements of a matrix
+*/
+matrix_t* matrix_scale(matrix_t *m, double factor);
+
+/**
 *  @brief Adds two matrices (m1 = m1 + m2)
 *  @param m1 pointer to the matrix 1
 *  @param m2 pointer to the matrix 2 

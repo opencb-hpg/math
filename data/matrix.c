@@ -66,6 +66,12 @@ int matrix_set_col (size_t j, const vector_t * v, matrix_t *m);
  *    		Operations with matrices  		*
  * *****************************************************/
 
+matrix_t* matrix_scale(matrix_t *m, double factor) {
+    gsl_matrix_scale(m->gsl_matrix, factor);
+
+    return m;
+}
+
 matrix_t* matrix_add(matrix_t *m1, matrix_t *m2) {
     gsl_matrix_add(m1->gsl_matrix, m2->gsl_matrix);
     
@@ -85,10 +91,10 @@ matrix_t* matrix_mul(matrix_t *m1, matrix_t *m2, matrix_t *m_result) {
 }
 
 matrix_t* matrix_inv(matrix_t *m, matrix_t* m_result) {
-    int *signum;
+    int signum;
     gsl_permutation *p = gsl_permutation_alloc(m->gsl_matrix->size1);
   
-    gsl_linalg_LU_decomp(m->gsl_matrix, p, signum);    
+    gsl_linalg_LU_decomp(m->gsl_matrix, p, &signum);    
     gsl_linalg_LU_invert(m->gsl_matrix, p, m_result->gsl_matrix);
   
     return m_result;
