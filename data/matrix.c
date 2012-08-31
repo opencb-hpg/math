@@ -105,7 +105,6 @@ matrix_t* matrix_inv(matrix_t *m, matrix_t* m_result) {
   
     gsl_linalg_LU_decomp(m->gsl_matrix, p, &signum);
     gsl_linalg_LU_invert(m->gsl_matrix, p, m_result->gsl_matrix);
-    gsl_matrix_scale(m->gsl_matrix, 1.0 * signum);
   
     // free permutation
     gsl_permutation_free(p);
