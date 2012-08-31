@@ -8,7 +8,7 @@ COMMONS_LIB = $(LIBS_DIR)/commons
 INCLUDES = -I$(PWD) -I$(PWD)/algebra -I$(PWD)/data -I$(PWD)/stats -I$(COMMONS_LIB)
 LIBS = -lgsl
 
-OBJECTS = anova.o anova_result.o array_utils.o correlation.o correlation_matrix.o fitting.o math_utils.o matrix.o p_adjust.o statistics.o stats_inference.o R_utils.o ttest.o ttest_result.o
+OBJECTS = anova.o anova_result.o array_utils.o correlation.o correlation_matrix.o cox.o fitting.o math_utils.o matrix.o p_adjust.o statistics.o stats_inference.o R_utils.o ttest.o ttest_result.o
 
 
 all: $(OBJECTS)
@@ -39,6 +39,9 @@ correlation.o:
 
 correlation_matrix.o:
 	$(CC) $(CFLAGS) -c stats/correlation_matrix.c $(INCLUDES) $(LIBS)
+
+cox.o:
+	$(CC) $(CFLAGS) -c stats/cox.c $(INCLUDES) $(LIBS)
 
 fitting.o:
 	$(CC) $(CFLAGS) -c algebra/fitting.c $(INCLUDES) $(LIBS)

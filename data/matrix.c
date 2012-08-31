@@ -103,7 +103,7 @@ matrix_t* matrix_inv(matrix_t *m, matrix_t* m_result) {
     int signum;
     gsl_permutation *p = gsl_permutation_alloc(m->gsl_matrix->size1);
   
-    gsl_linalg_LU_decomp(m->gsl_matrix, p, &signum);    
+    gsl_linalg_LU_decomp(m->gsl_matrix, p, &signum);
     gsl_linalg_LU_invert(m->gsl_matrix, p, m_result->gsl_matrix);
   
     // free permutation
