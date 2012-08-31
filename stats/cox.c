@@ -18,7 +18,6 @@ void cox_test(double** covariates, size_t num_features_in_covariate, size_t num_
     // other variables
     double denominator = 0, numerator = 0;
     double error1 = 1, error2 = 1;
-    //double** covariate = dataset_p->values;
     double* risk_factor = (double*) calloc(num_samples, sizeof(double));
     double* score = (double*) calloc(num_features_in_covariate, sizeof(double));
     double** expected_covariate = (double**) calloc(num_features_in_covariate, sizeof(double*));
@@ -42,15 +41,9 @@ void cox_test(double** covariates, size_t num_features_in_covariate, size_t num_
         for (size_t i = 0; i < num_samples; ++i) {
             risk_factor[i] = 1.0;
             for (size_t s = 0; s < num_features_in_covariate; ++s) {
-                //risk_factor[i] *= exp(coefficients[s] * covariate[s][i]);
                 risk_factor[i] *= exp(coefficients[s] * covariates[s][i]);
             }
         }
-
-        for (size_t i = 0; i < num_samples; ++i) {
-            //printf("risk_factor[%lu]: %f\n", i, risk_factor[i]);
-            //printf("coefficients[%lu]: %f\n", i, coefficients[i]);
-        } 
 
         for (size_t j = 0; j < num_features_in_covariate; j++) {
             score[j] = 0.0;
@@ -93,7 +86,6 @@ void cox_test(double** covariates, size_t num_features_in_covariate, size_t num_
 
         // fill score_matrix from score array
         for (size_t i = 0; i < num_features_in_covariate; i++) {
-            //printf("score[%lu]: %f\n", i, score[i]);
             matrix_set(i, 0, score[i], score_matrix_p);
         }
 
@@ -107,16 +99,10 @@ void cox_test(double** covariates, size_t num_features_in_covariate, size_t num_
         // fill coefficientes
         for (size_t i = 0; i < num_features_in_covariate; i++) {
             coefficients[i] = matrix_get(i, 0, coefficients_matrix_p);
-            printf("coefficients[%lu]: %f\n", i, coefficients[i]);
         }
 
         error1 = sqrt(matrix_Fnorm(error_matrix_p));
         error2 = sqrt(matrix_Fnorm(score_matrix_p));
-
-        printf("error1: %f, error2: %f\n", error1, error2);
-
-        //error1 = 0;  // <----- QUITAR!!!!!!!!!!!!!!!! 
-        //error2 = 0;  // <----- QUITAR!!!!!!!!!!!!!!!! 
     }  // end of while
     
     // calculate variance: (-1 * inv(information_matrix))
@@ -126,10 +112,6 @@ void cox_test(double** covariates, size_t num_features_in_covariate, size_t num_
             variance[i][j] = matrix_get(i, j, variance_matrix_p);
         }
     }  
-    
-    for (size_t i = 0; i < num_features_in_covariate; i++) {
-        printf("coefficients[%lu]: %f, variance[%lu][%lu]: %f", i, coefficients[i], i, i, variance[i][i]);
-    } 
 
     // free gsl matrices
     matrix_free(coefficients_matrix_p);
