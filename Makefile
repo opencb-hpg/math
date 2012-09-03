@@ -47,7 +47,7 @@ fitting.o:
 	$(CC) $(CFLAGS) -c algebra/fitting.c $(INCLUDES) $(LIBS)
 
 fisher.o:
-	$(CC) $(CFLAGS) -c stats/fischer.c $(INCLUDES) $(LIBS)
+	$(CC) $(CFLAGS) -c stats/fisher.c $(INCLUDES) $(LIBS)
 
 math_utils.o:
 	$(CC) $(CFLAGS) -c math_utils.h $(INCLUDES) $(LIBS)
