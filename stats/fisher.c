@@ -298,7 +298,7 @@ double *fisher_test_omp(int* a, int* b, int* c, int* d, int len, enum Fisher_mod
             numerator = factorial_logarithms[a[i]+b[i]] + factorial_logarithms[b[i]+d[i]] + factorial_logarithms[a[i]+c[i]] + factorial_logarithms[c[i]+d[i]];
             denominator = n + factorial_logarithms[a[i]] + factorial_logarithms[b[i]] + factorial_logarithms[c[i]] + factorial_logarithms[d[i]];
             init_p = numerator - denominator;
-
+    printf("i: %lu, numerator: %f, denominator: %f, init_p: %f\n", i, numerator, denominator, init_p); //
             if (current_p <= init_p) {
                 result[i] = exp(current_p);
             } else {
@@ -334,9 +334,9 @@ double *fisher_test_omp(int* a, int* b, int* c, int* d, int len, enum Fisher_mod
         }
     }
     
-    for (int i = 0; i < len; i++) {
-        printf("result[i]: %f\n", result[i]);
-    }
+    for (int i = 0; i < len; i++) { //
+        printf("result[%lu]: %f\n", i, result[i]); //
+    } //
     
     return result;
 }
