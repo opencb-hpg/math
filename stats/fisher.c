@@ -333,7 +333,11 @@ double *fisher_test_omp(int* a, int* b, int* c, int* d, int len, enum Fisher_mod
             }
         }
     }
-    printf("mode: %i, result: %f", mode, result);
+    
+    for (int i = 0; i < len; i++) {
+        printf("result[i]: %f", result[i]);
+    }
+    
     return result;
 }
 
