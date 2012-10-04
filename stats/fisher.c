@@ -315,6 +315,12 @@ printf("result_before_steps[%lu]: %f\n", i, result[i]); //
                 denominator = n + factorial_logarithms[init_a] + factorial_logarithms[init_b] + factorial_logarithms[init_c] + factorial_logarithms[init_d];
                 current_p = numerator - denominator;
 
+printf("numerator = (a+b)!(c+d)!(a+c)!(b+d)! = %f + %f + %f + %f = %f\n", factorial_logarithms[init_a+init_b], factorial_logarithms[init_c+init_d],
+    factorial_logarithms[init_b+init_d], factorial_logarithms[init_a+init_c], numerator); //
+printf("denominator = (a)!(b)!(c)!(d)!(a+b+c+d)! = %f + %f + %f + %f + %f = %f\n", factorial_logarithms[init_a], factorial_logarithms[init_b],
+       factorial_logarithms[init_c], factorial_logarithms[init_d], factorial_logarithms[init_a+init_b+init_c+init_d]); //
+
+
                 if(current_p <= init_p) {
                     result[i] += exp(current_p);
 printf("current_p: %f, init_p: %f\n", current_p, init_p); //
