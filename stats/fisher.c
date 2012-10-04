@@ -304,7 +304,7 @@ double *fisher_test_omp(int* a, int* b, int* c, int* d, int len, enum Fisher_mod
             } else {
                 result[i] = 0;
             }
-
+printf("result_before_steps[%lu]: %f\n", i, result[i]); //
             while(steps-- > 0) {
                 init_a++;
                 init_d++;
@@ -317,6 +317,7 @@ double *fisher_test_omp(int* a, int* b, int* c, int* d, int len, enum Fisher_mod
                 if(current_p <= init_p) {
                     result[i] += exp(current_p);
                 }
+printf("result_in_steps[%lu]: %f\n", i, result[i]); //
             }
         } else {
             result[i] = exp(current_p);
