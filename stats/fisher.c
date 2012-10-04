@@ -314,7 +314,7 @@ printf("result_before_steps[%lu]: %f\n", i, result[i]); //
                                factorial_logarithms[init_a+init_c] + factorial_logarithms[init_c+init_d];
                 denominator = n + factorial_logarithms[init_a] + factorial_logarithms[init_b] + factorial_logarithms[init_c] + factorial_logarithms[init_d];
                 current_p = numerator - denominator;
-printf("current_p: %f\n", current_p); //
+printf("current_p: %f, init_p: %f\n", current_p, init_p); //
                 if(current_p <= init_p) {
                     result[i] += exp(current_p);
                 }
