@@ -335,7 +335,7 @@ double *fisher_test_omp(int* a, int* b, int* c, int* d, int len, enum Fisher_mod
     }
     
     for (int i = 0; i < len; i++) {
-        printf("result[i]: %f", result[i]);
+        printf("result[i]: %f\n", result[i]);
     }
     
     return result;
