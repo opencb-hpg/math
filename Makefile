@@ -3,7 +3,7 @@ CFLAGS = -static -std=c99 -O3 -Wall
 CFLAGS_DEBUG = -static -std=c99 -g
 
 LIBS_DIR = $(PWD)/..
-COMMONS_LIB = $(LIBS_DIR)/commons
+COMMONS_LIB = $(LIBS_DIR)/common-libs/commons
 
 INCLUDES = -I$(PWD) -I$(PWD)/algebra -I$(PWD)/data -I$(PWD)/stats -I$(COMMONS_LIB)
 LIBS = -lgsl
