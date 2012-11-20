@@ -4,11 +4,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <assert.h>
 
 #include <gsl/gsl_sort.h>
 #include <gsl/gsl_statistics_double.h>
 
-#include "log.h"
+//#include "log.h"
 
 /* **************************************
  *    		Structures  		*
