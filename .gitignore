@@ -9,3 +9,4 @@ build/*
 *kdev*
 math_utils.h.gch
 .sconsign.dblite
+old
