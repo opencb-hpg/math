@@ -2,7 +2,7 @@ Import('debug')
 
 env = Environment(CFLAGS = '-std=c99 -D_XOPEN_SOURCE=600 -D_BSD_SOURCE ',
                   LIBS = ['gsl'], 
-                  CPPPATH = ['#', '#stats', '#data' ])
+                  CPPPATH = [ '.', 'stats', 'data' ])
 
 env.Decider('MD5-timestamp')
 
