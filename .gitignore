@@ -1,5 +1,6 @@
 
 *.o
+*.a
 *.test
 build/*
 *~
@@ -7,3 +8,4 @@ build/*
 *sonar*
 *kdev*
 math_utils.h.gch
+.sconsign.dblite

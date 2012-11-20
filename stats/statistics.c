@@ -32,9 +32,7 @@ double stats_percentile(double* values, size_t length, double percentile) {
 }
 
 double stats_percentile_sorted_values(const double* values, size_t length, double percentile) {
-    if ((percentile > 100) || (percentile < 0)) {
-        LOG_FATAL("Percentile value must be between 0 and 100");
-    }
+    assert ((percentile > 100) || (percentile < 0));
       
     return gsl_stats_quantile_from_sorted_data(values, 1, length, (percentile / 100));  
 }
