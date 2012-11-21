@@ -9,7 +9,7 @@
 #include <gsl/gsl_randist.h>
 #include <gsl/gsl_cdf.h>
 
-#include "matrix.h"
+#include "data/matrix.h"
 
 #define COX_ERROR_LIMIT		0.00001
 
