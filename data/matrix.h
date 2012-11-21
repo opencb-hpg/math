@@ -9,7 +9,7 @@
 #include <gsl/gsl_linalg.h>
 #include <gsl/gsl_matrix.h>
 
-#include "statistics.h"
+#include "stats/statistics.h"
 
 /* **************************************
  *    		Structures  		*
