@@ -314,9 +314,11 @@ double *fisher_test_omp(int* a, int* b, int* c, int* d, int len, enum Fisher_mod
                                factorial_logarithms[init_a+init_c] + factorial_logarithms[init_c+init_d];
                 denominator = n + factorial_logarithms[init_a] + factorial_logarithms[init_b] + factorial_logarithms[init_c] + factorial_logarithms[init_d];
                 current_p = numerator - denominator;
+
                 if(current_p <= init_p) {
                     result[i] += exp(current_p);
                 }
+
             }
         } else {
             result[i] = exp(current_p);
