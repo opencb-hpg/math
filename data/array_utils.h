@@ -2,8 +2,10 @@
 #define ARRAY_UTILS_H
 
 #include <math.h>
+#include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/time.h>
 
 #include "math_utils.h"
 
@@ -34,6 +36,28 @@ int array_accum_range(const double *values, size_t begin, size_t end, double *re
 int array_order(double *values, size_t n, int asc, size_t *indices);
 
 int array_ordered(const double *values, size_t n, const size_t *indices, double *ordered);
+
+/**
+ * @brief Shuffles an array of doubles
+ * @details Shuffles an array of doubles using the Fisher–Yates shuffle algorithm, which guarantees that 
+ * every permutation is equally likely (unbiased)
+ * @see http://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
+ * 
+ * @param[in,out] values The array to shuffle
+ * @param n Number of elements in the array
+ **/
+void array_shuffle(double *values, size_t n);
+
+/**
+ * @brief Shuffles an array of integers
+ * @details Shuffles an array of integers using the Fisher–Yates shuffle algorithm, which guarantees that 
+ * every permutation is equally likely (unbiased)
+ * @see http://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
+ * 
+ * @param[in,out] values The array to shuffle
+ * @param n Number of elements in the array
+ **/
+void array_shuffle_int(int *values, size_t n);
 
 
 size_t array_printf(const double *values, size_t n, char *format);

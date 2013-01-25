@@ -153,6 +153,40 @@ int array_ordered(const double *values, size_t n, const size_t *indices, double 
     return 1;
 }
 
+void array_shuffle(double *values, size_t n) {
+    if (n > 1) {
+        struct timeval tv;
+        gettimeofday(&tv, NULL);
+        int usec = tv.tv_usec;
+        srand48(usec);
+        
+        size_t i;
+        for (i = n - 1; i > 0; i--) {
+            size_t j = (unsigned int) (drand48() * (i+1));
+            double t = values[j];
+            values[j] = values[i];
+            values[i] = t;
+        }
+    }
+}
+
+void array_shuffle_int(int *values, size_t n) {
+    if (n > 1) {
+        struct timeval tv;
+        gettimeofday(&tv, NULL);
+        int usec = tv.tv_usec;
+        srand48(usec);
+        
+        size_t i;
+        for (i = n - 1; i > 0; i--) {
+            size_t j = (unsigned int) (drand48() * (i+1));
+            int t = values[j];
+            values[j] = values[i];
+            values[i] = t;
+        }
+    }
+}
+
 
 
 size_t array_printf(const double *values, size_t n, char *format) {

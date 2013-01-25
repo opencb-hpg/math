@@ -16,5 +16,6 @@ else:
 algebra_obj = env.Object(Glob('algebra/*.c'))
 data_obj = env.Object(Glob('data/*.c'))
 stats_obj = env.Object(Glob('stats/*.c'))
+utils_obj = env.Object('math_utils.c')
 
-env.Library('hpgmath', algebra_obj + data_obj + stats_obj)
+env.Library('hpgmath', algebra_obj + data_obj + stats_obj + utils_obj)
